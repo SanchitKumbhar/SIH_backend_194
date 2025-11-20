@@ -43,3 +43,5 @@ tmp/
 .flaskenv
 config.pyc
 settings_local.py
+uploads/
+server.py
