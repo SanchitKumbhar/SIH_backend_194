@@ -3,9 +3,8 @@ import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
-from bson import ObjectId
+from bson import ObjectId # Keeping the import for context, though not strictly used for simple conversion
 from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
 from itertools import repeat
 
 # ------------------------------
@@ -26,6 +25,8 @@ client = MongoClient(
 
 db = client["sih_appraisal"]
 classification_collection = db["column_classification"]
+# ADDED: New collection for Success Profiles
+success_profile_collection = db["success_profiles"] 
 
 # ------------------------------
 # Feature Map for Keyword Match
@@ -44,6 +45,7 @@ pillar_weights = {
     "Skill":       0.10,
     "Risk":        0.05
 }
+
 # ------------------------------
 # Function: Detect Pillar Name
 # ------------------------------
@@ -216,7 +218,8 @@ def upload_file():
 
     with ThreadPoolExecutor() as executor:
             executor.map(task,process,repeat(assigned.get("performance")),repeat(assigned.get("potential")),repeat(assigned.get("behavior")),repeat(assigned.get("skill")),repeat(assigned.get("risk")))
-    # Prepare result JSON
+    
+    # Prepare result JSON (before saving to Mongo to ensure only standard Python objects are used)
     result_data = {
         "file_name": file.filename,
         "total_columns": len(df.columns),
@@ -224,12 +227,102 @@ def upload_file():
     }
 
     # ------------------------------
-    # Save in MongoDB
+    # Save in MongoDB and get the string ID for the response
     # ------------------------------
-    insert_id = classification_collection.insert_one(result_data).inserted_id
-    result_data["_id"] = str(insert_id)
+    insert_result = classification_collection.insert_one(result_data)
+    
+    # CONVERSION: Use the inserted_id from the result and convert it to string
+    result_data["_id"] = str(insert_result.inserted_id)
 
+    # Return the data, which now has the string ID
     return jsonify(result_data)
+
+# ------------------------------
+# Create New Success Profile Route (POST)
+# ------------------------------
+@app.route("/create-profile", methods=["POST"])
+def create_success_profile():
+    """
+    Handles POST requests to create a new success profile in the database.
+    """
+    try:
+        # Get the JSON data from the request body
+        profile_data = request.json
+        
+        if not profile_data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        # --- Mandatory Field Validation ---
+        if "RoleTitle" not in profile_data:
+            return jsonify({"error": "Missing 'RoleTitle' in request body"}), 400
+        if "MinimumExperienceYears" not in profile_data:
+            return jsonify({"error": "Missing 'MinimumExperienceYears' in request body"}), 400
+        # Check if Competencies are present and correctly formatted as a dictionary
+        if "RequiredCompetencies" not in profile_data or not isinstance(profile_data.get("RequiredCompetencies"), dict):
+            return jsonify({"error": "Missing or invalid 'RequiredCompetencies' (expected dictionary)"}), 400
+        
+        # --- Handle Optional/List Fields ---
+        # Ensure list fields are present and are lists, defaulting to empty list if missing/wrong type
+        if "ApplicableRoles" not in profile_data or not isinstance(profile_data.get("ApplicableRoles"), list):
+             profile_data["ApplicableRoles"] = [] 
+        
+        if "FunctionalSkills" not in profile_data or not isinstance(profile_data.get("FunctionalSkills"), list):
+            profile_data["FunctionalSkills"] = []
+            
+        if "GeographicalExperience" not in profile_data or not isinstance(profile_data.get("GeographicalExperience"), list):
+            profile_data["GeographicalExperience"] = []
+
+        # Insert the entire, validated profile data object into MongoDB
+        # NOTE: This operation mutates profile_data to include the ObjectId
+        insert_result = success_profile_collection.insert_one(profile_data)
+        
+        # --- FIX: Convert the ObjectId in the inserted data to a string ---
+        inserted_id_str = str(insert_result.inserted_id)
+        # Update the original dict with the string ID, making it safe for JSON serialization
+        profile_data["_id"] = inserted_id_str 
+        # -----------------------------------------------------------------
+
+        # Prepare the response
+        response_data = {
+            "message": "Success Profile created successfully",
+            "profile_id": inserted_id_str, # Use the converted string ID
+            "data_received": profile_data # This is now safe because "_id" is a string
+        }
+
+        # Return a JSON response with status 201 (Created)
+        return jsonify(response_data), 201
+
+    except Exception as e:
+        print(f"Error creating profile: {e}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
+# ------------------------------
+# Route: Get All Success Profiles (GET)
+# ------------------------------
+@app.route("/profiles", methods=["GET"])
+def get_all_success_profiles():
+    """
+    Handles GET requests to retrieve all success profiles from the database.
+    """
+    try:
+        # Query MongoDB to find all documents in the collection
+        profiles_cursor = success_profile_collection.find({})
+        
+        # Convert the Cursor into a list of dictionaries
+        profiles_list = list(profiles_cursor)
+        
+        # Process the list: convert the MongoDB ObjectId to a string
+        for profile in profiles_list:
+            if "_id" in profile:
+                # Convert BSON ObjectId to string for JSON serialization
+                profile["_id"] = str(profile["_id"]) 
+        
+        # Return the list of profiles
+        return jsonify(profiles_list), 200
+
+    except Exception as e:
+        print(f"Error retrieving profiles: {e}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
 
 # ------------------------------
