@@ -36,6 +36,7 @@ wheels/
 *.log
 tmp/
 .webassets-cache
+*.csv
 
 # Configuration / Environment Variables
 # NEVER commit files that contain credentials, keys, or secrets!
@@ -45,3 +46,4 @@ config.pyc
 settings_local.py
 uploads
 server.py
+
