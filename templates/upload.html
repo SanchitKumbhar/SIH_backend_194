@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Appraisal Sheet</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .container {
+            max-width: 480px;
+        }
+
+        h2 {
+            color: #4a4a4a;
+        }
+
+        input[type="file"] {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 6px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Upload Appraisal CSV or Excel</h2>
+
+    <form id="upload-form">
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" required>
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <pre id="result"></pre>
+</div>
+
+<script>
+    const form = document.getElementById("upload-form");
+    const resultBox = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const file = document.getElementById("fileInput").files[0];
+        if (!file) {
+            alert("Please select a file first!");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            resultBox.textContent = JSON.stringify(data, null, 4);
+
+        } catch (error) {
+            resultBox.textContent = "Error: " + error;
+        }
+    });
+</script>
+
+</body>
+</html>

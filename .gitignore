@@ -1,0 +1,45 @@
+# Python
+# Virtual Environment
+.venv
+venv
+env
+/tmp
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Tests
+.pytest_cache/
+
+# Distributions and packaging
+.Python
+build/
+dist/
+wheels/
+*.egg-info/
+*.whl
+
+# Flask / Web Development Specific
+# Static files / Build outputs (if you're using a build tool like webpack)
+/static/dist/
+/public/dist/
+
+# Database files
+*.sqlite
+*.db
+/instance/*.sqlite
+/instance/*.db
+
+# Log and Temp files
+*.log
+tmp/
+.webassets-cache
+
+# Configuration / Environment Variables
+# NEVER commit files that contain credentials, keys, or secrets!
+.env
+.flaskenv
+config.pyc
+settings_local.py
