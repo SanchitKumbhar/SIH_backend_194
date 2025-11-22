@@ -33,10 +33,10 @@ wheels/
 /instance/*.db
 
 # Log and Temp files
+*.csv
 *.log
 tmp/
 .webassets-cache
-*.csv
 
 # Configuration / Environment Variables
 # NEVER commit files that contain credentials, keys, or secrets!
