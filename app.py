@@ -9,6 +9,8 @@ from itertools import repeat
 
 #blueprint import
 from profile_routes import profile_routes
+from auth_routes import auth_routes
+
 
 app = Flask(__name__)
 CORS(app)
@@ -31,6 +33,8 @@ def inject_db():
 
 # Register Blueprints
 app.register_blueprint(profile_routes)
+app.register_blueprint(auth_routes)
+
 
 # feature mapping for pillars
 feature_map = {
