@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Data Bulk Upload</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for better aesthetics */
+        body { background-color: #f7f9fc; }
+        .card { 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); 
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex items-center justify-center p-4">
+
+    <div class="card w-full max-w-lg bg-white rounded-xl p-8">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-6 text-center">HR Employee Bulk Upload</h1>
+        <p class="text-sm text-gray-500 mb-6 text-center">Upload a CSV or XLSX file to create and update employee accounts in bulk. Passwords will be automatically generated and hashed.</p>
+        
+        <!-- Instruction Note -->
+        <div class="p-4 mb-6 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm">
+            <p class="font-semibold mb-1">Required Columns:</p>
+            <code class="text-xs">EmployeeID, FirstName, LastName, Email, Role</code>
+            <p class="mt-2">Ensure `EmployeeID` is unique. Existing IDs will be updated.</p>
+        </div>
+
+        <form id="bulk-upload-form" class="space-y-6">
+            <div class="flex flex-col">
+                <label for="employeeFile" class="text-sm font-medium text-gray-700 mb-2">Select Employee Data Sheet:</label>
+                <input type="file" name="file" id="employeeFile" 
+                       accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer rounded-lg border border-gray-300 p-2"
+                       required>
+            </div>
+            
+            <button type="submit" id="upload-button"
+                    class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition duration-150 ease-in-out shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-300">
+                Upload & Process Employees
+            </button>
+        </form>
+
+        <div id="loading-indicator" class="hidden text-center mt-4 text-indigo-600 font-medium">
+            Processing file... Please wait.
+        </div>
+        
+        <pre id="result-box" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm overflow-auto max-h-64 whitespace-pre-wrap"></pre>
+    </div>
+
+    <script>
+        const form = document.getElementById("bulk-upload-form");
+        const fileInput = document.getElementById("employeeFile");
+        const resultBox = document.getElementById("result-box");
+        const loadingIndicator = document.getElementById("loading-indicator");
+        const uploadButton = document.getElementById("upload-button");
+
+        // Use the same UPLOAD_FOLDER path as the backend
+        const API_URL = "http://localhost:5000/hr/bulk-upload-employees"; 
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const file = fileInput.files[0];
+            if (!file) {
+                resultBox.textContent = "Please select a file first.";
+                return;
+            }
+
+            // Show loading state
+            loadingIndicator.classList.remove('hidden');
+            uploadButton.disabled = true;
+            resultBox.textContent = ''; 
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                // Display success or error
+                if (response.ok) {
+                    resultBox.textContent = JSON.stringify(data, null, 2);
+                    resultBox.classList.remove('text-red-600', 'border-red-400');
+                    resultBox.classList.add('text-green-700', 'border-green-400', 'bg-green-50');
+                } else {
+                    resultBox.textContent = `Error: ${data.error || 'Failed to process file.'}`;
+                    resultBox.classList.add('text-red-600', 'border-red-400', 'bg-red-50');
+                    resultBox.classList.remove('text-green-700', 'border-green-400', 'bg-green-50');
+                }
+
+            } catch (error) {
+                resultBox.textContent = `Network or fetch error: ${error.message}`;
+                resultBox.classList.add('text-red-600', 'border-red-400', 'bg-red-50');
+                resultBox.classList.remove('text-green-700', 'border-green-400', 'bg-green-50');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                uploadButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
