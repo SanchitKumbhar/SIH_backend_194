@@ -4,9 +4,8 @@ from bson import ObjectId
 # Blueprint
 profile_routes = Blueprint("profile_routes", __name__)
 
-# -----------------------------
-# CREATE PROFILE (POST)
-# -----------------------------
+#post request to create success profile
+
 @profile_routes.route("/create-profile", methods=["POST"])
 def create_success_profile():
     try:
@@ -15,7 +14,6 @@ def create_success_profile():
         if not profile_data:
             return jsonify({"error": "No JSON data provided"}), 400
 
-        # Mandatory validations
         if "RoleTitle" not in profile_data:
             return jsonify({"error": "Missing 'RoleTitle'"}), 400
         if "MinimumExperienceYears" not in profile_data:
@@ -23,7 +21,6 @@ def create_success_profile():
         if "RequiredCompetencies" not in profile_data or not isinstance(profile_data["RequiredCompetencies"], dict):
             return jsonify({"error": "RequiredCompetencies must be a dictionary"}), 400
 
-        # Defaults for optional lists
         profile_data.setdefault("ApplicableRoles", [])
         profile_data.setdefault("FunctionalSkills", [])
         profile_data.setdefault("GeographicalExperience", [])
@@ -43,9 +40,7 @@ def create_success_profile():
         return jsonify({"error": str(e)}), 500
 
 
-# -----------------------------
-# GET ALL PROFILES (GET)
-# -----------------------------
+# get request to fetch all success profiles
 @profile_routes.route("/profiles", methods=["GET"])
 def get_all_success_profiles():
     try:
@@ -61,9 +56,7 @@ def get_all_success_profiles():
         return jsonify({"error": str(e)}), 500
 
 
-# -----------------------------
-# UPDATE PROFILE (PUT)
-# -----------------------------
+#update profile (PUT)
 @profile_routes.route("/update-profile/<profile_id>", methods=["PUT"])
 def update_profile(profile_id):
     try:
@@ -89,9 +82,7 @@ def update_profile(profile_id):
         return jsonify({"error": str(e)}), 500
 
 
-# -----------------------------
-# DELETE PROFILE (DELETE)
-# -----------------------------
+#delete profile (DELETE)
 @profile_routes.route("/delete-profile/<profile_id>", methods=["DELETE"])
 def delete_profile(profile_id):
     try:
