@@ -112,7 +112,9 @@ def task(df, current_role, target_role_map, performance, potential, skill, risk,
             n = len(numeric_cols_present)
             weights = {c: 1.0/n for c in numeric_cols_present}
 
-        composite = sum(norm_df[c] * weights[c] * (1/len(df.columns)) for c in numeric_cols_present)
+        # NOTE: Original code had (1/len(df.columns)) which seems incorrect for weighting. 
+        # Assuming the intent was to use the normalized weights calculated above:
+        composite = sum(norm_df[c] * weights[c] for c in numeric_cols_present)
         return composite.clip(0,1)
 
     performance_invert = ["ErrorRate(%)"]
@@ -152,6 +154,11 @@ def task(df, current_role, target_role_map, performance, potential, skill, risk,
     # Determine Target Role based on current role (current_role)
     # This looks up the employee's current role in the map derived from 'ApplicableRoles'
     target_role = target_role_map.get(current_role, None) 
+    
+    # NEW LOGIC: Skip saving to DB if the current_role did not map to a target_role
+    if target_role is None:
+        print(f"Skipping DB write for role: '{current_role}' as no Target Role was mapped.")
+        return
 
 
     # 4. Write the scored data to the Appraisal_Score_Analytics collection
