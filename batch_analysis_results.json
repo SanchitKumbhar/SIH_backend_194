@@ -1,0 +1,542 @@
+[
+  {
+    "employee_name": "Employee_1",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Analytical Thinking",
+          "Attention to Detail"
+        ],
+        "behavioral_traits": [
+          "Detail-oriented",
+          "Systematic",
+          "Analytic"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Problem Solving"
+        ]
+      },
+      "reasoning": "Employee_1 shows a decent performance with potential for improvement in technical skills and problem-solving abilities. They are low risk of attrition due to their role stability."
+    }
+  },
+  {
+    "employee_name": "Employee_2",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 5,
+        "potential_score": 6,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Debugging",
+          "Software Development"
+        ],
+        "behavioral_traits": [
+          "Innovative",
+          "Collaborative",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_2 demonstrates average performance with potential for growth in teamwork and time management. They are low risk of attrition due to their role stability."
+    }
+  },
+  {
+    "employee_name": "Employee_3",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 4,
+        "potential_score": 5,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Creativity",
+          "Visual Communication"
+        ],
+        "behavioral_traits": [
+          "Innovative",
+          "Collaborative",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Creativity"
+        ]
+      },
+      "reasoning": "Employee_3 shows below average performance with potential for improvement in teamwork and creativity. They are low risk of attrition due to their role stability."
+    }
+  },
+  {
+    "employee_name": "Employee_4",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 5,
+        "potential_score": 6,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Leadership",
+          "Strategic Thinking"
+        ],
+        "behavioral_traits": [
+          "Innovative",
+          "Collaborative",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Communication",
+          "Creativity"
+        ]
+      },
+      "reasoning": "Employee_4 demonstrates average performance with potential for growth in communication and creativity. They are low risk of attrition due to their role stability."
+    }
+  },
+  {
+    "employee_name": "Employee_5",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Analytical Thinking",
+          "Attention to Detail"
+        ],
+        "behavioral_traits": [
+          "Detail-oriented",
+          "Systematic",
+          "Analytic"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_5 shows a decent performance with potential for improvement in teamwork and leadership skills. They are low risk of attrition due to their role stability."
+    }
+  },
+  {
+    "employee_name": "Employee_6",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Technical Skills",
+          "Problem Solving"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Self-motivated"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Communication"
+        ]
+      },
+      "reasoning": "Employee_6 shows decent performance as a Developer but lacks in Leadership and Communication skills. The potential score is lower due to the identified gaps, which could impact their ability to grow within the company."
+    }
+  },
+  {
+    "employee_name": "Employee_7",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Technical Skills",
+          "Problem Solving"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Self-motivated"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_7 demonstrates good technical skills as a Developer but struggles with Problem Solving and Teamwork. The potential score is moderate due to the identified gaps, which might limit their ability to collaborate effectively."
+    }
+  },
+  {
+    "employee_name": "Employee_8",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Strategic Thinking",
+          "Communication"
+        ],
+        "behavioral_traits": [
+          "Organized",
+          "Adaptable",
+          "Collaborative"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Problem Solving"
+        ]
+      },
+      "reasoning": "Employee_8 has a decent performance as a Project Manager but lacks in Leadership and Problem Solving skills. The potential score is moderate due to the identified gaps, which might affect their ability to lead projects effectively."
+    }
+  },
+  {
+    "employee_name": "Employee_9",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 6,
+        "risk_of_attrition": "Low"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Statistical Skills",
+          "Technical Proficiency"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Attention to Detail",
+          "Innovative"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Communication"
+        ]
+      },
+      "reasoning": "Employee_9 performs well as a Data Analyst but needs improvement in Teamwork and Communication skills. The potential score is slightly lower due to the identified gaps, which might limit their ability to collaborate with teams effectively."
+    }
+  },
+  {
+    "employee_name": "Employee_10",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Technical Skills",
+          "Problem Solving"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Self-motivated"
+        ],
+        "competency_gaps": [
+          "Creativity",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_10 shows good technical skills as a Developer but lacks in Creativity and Leadership. The potential score is moderate due to the identified gaps, which might limit their ability to innovate or lead teams effectively."
+    }
+  },
+  {
+    "employee_name": "Employee_11",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Software Development",
+          "Technical"
+        ],
+        "behavioral_traits": [
+          "Analytical Thinking",
+          "Attention to Detail",
+          "Self-Learning"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Technical"
+        ]
+      },
+      "reasoning": "Employee_11 shows decent performance as a Developer but struggles with Problem Solving and Technical skills. The potential score is slightly higher due to their role, while the risk of attrition is medium because they might seek roles that better match their strengths."
+    }
+  },
+  {
+    "employee_name": "Employee_12",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 5,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Testing",
+          "Technical"
+        ],
+        "behavioral_traits": [
+          "Attention to Detail",
+          "Analytical Thinking",
+          "Collaboration"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_12 demonstrates average performance as a QA with weaknesses in Technical skills and Time Management. The potential score is slightly above average due to their role, but the risk of attrition is medium because they might seek roles that emphasize their strengths."
+    }
+  },
+  {
+    "employee_name": "Employee_13",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 5,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Leadership",
+          "Communication"
+        ],
+        "behavioral_traits": [
+          "Strategic Thinking",
+          "Adaptability",
+          "Teamwork"
+        ],
+        "competency_gaps": [
+          "Time Management",
+          "Communication"
+        ]
+      },
+      "reasoning": "Employee_13 performs adequately as a Project Manager with deficiencies in Time Management and Communication. The potential score is slightly above average due to their role, but the risk of attrition is medium because they might seek roles that better utilize their strengths."
+    }
+  },
+  {
+    "employee_name": "Employee_14",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Software Development",
+          "Technical"
+        ],
+        "behavioral_traits": [
+          "Analytical Thinking",
+          "Attention to Detail",
+          "Self-Learning"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Communication"
+        ]
+      },
+      "reasoning": "Employee_14 shows decent performance as a Developer with weaknesses in Problem Solving and Communication. The potential score is slightly higher due to their role, while the risk of attrition is medium because they might seek roles that better match their strengths."
+    }
+  },
+  {
+    "employee_name": "Employee_15",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 4,
+        "potential_score": 5,
+        "risk_of_attrition": "High"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Creativity",
+          "Technical"
+        ],
+        "behavioral_traits": [
+          "Innovation",
+          "Attention to Detail",
+          "Collaboration"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_15 performs below average as a Designer with weaknesses in Problem Solving and Time Management. The potential score is slightly above average due to their role, but the risk of attrition is high because they might seek roles that better utilize their strengths."
+    }
+  },
+  {
+    "employee_name": "Employee_16",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Creativity",
+          "Collaboration"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Communication",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_16 shows decent performance as a Designer but needs to improve in Communication and Leadership. The potential score is lower due to the identified gaps."
+    }
+  },
+  {
+    "employee_name": "Employee_17",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 4,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Statistical Knowledge",
+          "Problem-solving"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Innovative"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_17 demonstrates good skills as a Data Analyst but needs to improve Technical proficiency and Time Management. The potential score is lower due to the identified gaps."
+    }
+  },
+  {
+    "employee_name": "Employee_18",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 4,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Creativity",
+          "Collaboration"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_18 shows decent performance as a Designer but needs to improve Problem Solving and Teamwork. The potential score is lower due to the identified gaps."
+    }
+  },
+  {
+    "employee_name": "Employee_19",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 5,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Strategic Thinking",
+          "Communication"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Adaptable"
+        ],
+        "competency_gaps": [
+          "Communication",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_19 demonstrates good performance as a Project Manager but needs to improve Communication and Leadership. The potential score is lower due to the identified gaps."
+    }
+  },
+  {
+    "employee_name": "Employee_20",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 4,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Analytical Skills",
+          "Attention to Detail"
+        ],
+        "behavioral_traits": [
+          "Analytical",
+          "Detail-oriented",
+          "Innovative"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_20 shows good performance as a QA but needs to improve Problem Solving and Time Management. The potential score is lower due to the identified gaps."
+    }
+  }
+]
