@@ -1,0 +1,341 @@
+[
+    {
+        "employee_id": "E001",
+        "employee_name": "Aarav Sharma",
+        "employee_analysis": {
+            "current_role": "Software Engineer",
+            "target_role": "Tech Lead",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Low"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Problem Solving",
+                    "Learning Agility",
+                    "Team Collaboration"
+                ],
+                "behavioral_traits": [
+                    "Good Communication",
+                    "Strong Performance"
+                ],
+                "competency_gaps": [
+                    "Leadership"
+                ]
+            },
+            "reasoning": "Aarav demonstrates strong performance and potential, aligning well with the Tech Lead role. His skill set and experience indicate readiness for the target role, with a need for developing leadership skills. Low attrition risk suggests high engagement.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E002",
+        "employee_name": "Diya Verma",
+        "employee_analysis": {
+            "current_role": "Marketing Specialist",
+            "target_role": "Marketing Manager",
+            "quantitative_scores": {
+                "performance_score": 3,
+                "potential_score": 3,
+                "risk_of_attrition": "Medium"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Communication",
+                    "Learning Agility"
+                ],
+                "behavioral_traits": [
+                    "Good Communication"
+                ],
+                "competency_gaps": [
+                    "KPI Achievement",
+                    "Team Collaboration",
+                    "Problem Solving"
+                ]
+            },
+            "reasoning": "Diya's performance and potential scores are moderate, suggesting a need for improvement to fully transition to the Marketing Manager role. Addressing competency gaps and increasing engagement will be key for development and retention.",
+            "nine_box_performance": "Medium Performer",
+            "nine_box_potential": "Medium Potential",
+            "nine_box_label": "Core Players"
+        }
+    },
+    {
+        "employee_id": "E003",
+        "employee_name": "Karan Singh",
+        "employee_analysis": {
+            "current_role": "Senior Developer",
+            "target_role": "Tech Lead",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Low"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Problem Solving",
+                    "Customer Feedback"
+                ],
+                "behavioral_traits": [
+                    "Strong Performance",
+                    "Good Manager Feedback"
+                ],
+                "competency_gaps": [
+                    "Learning Agility"
+                ]
+            },
+            "reasoning": "Karan is a high performer with high potential, meeting most requirements for the Tech Lead role. His long tenure, high performance, and critical role designation make him a valuable asset with low attrition risk. Focus on development to retain and promote.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E004",
+        "employee_name": "Meera Iyer",
+        "employee_analysis": {
+            "current_role": "HR Coordinator",
+            "target_role": "HR Manager",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Very Low"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Training Effectiveness"
+                ],
+                "behavioral_traits": [
+                    "Good Communication",
+                    "Strong Performance"
+                ],
+                "competency_gaps": [
+                    "Engagement"
+                ]
+            },
+            "reasoning": "Meera's performance and potential scores are strong, indicating readiness for the HR Manager role. High training effectiveness and low attrition risk signal a motivated employee. Focus on increasing engagement.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E005",
+        "employee_name": "Rahul Kulkarni",
+        "employee_analysis": {
+            "current_role": "Financial Analyst",
+            "target_role": "Director of Finance",
+            "quantitative_scores": {
+                "performance_score": 3,
+                "potential_score": 3,
+                "risk_of_attrition": "Medium"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Team Collaboration"
+                ],
+                "behavioral_traits": [],
+                "competency_gaps": [
+                    "KPI Achievement",
+                    "Communication",
+                    "Learning Agility"
+                ]
+            },
+            "reasoning": "Rahul's performance and potential are moderate. There is a need for improvement across several areas to align with the Director of Finance role. Addressing skill gaps and improving performance metrics are critical for his development and retention.",
+            "nine_box_performance": "Medium Performer",
+            "nine_box_potential": "Medium Potential",
+            "nine_box_label": "Core Players"
+        }
+    },
+    {
+        "employee_id": "E006",
+        "employee_name": "Simran Arora",
+        "employee_analysis": {
+            "current_role": "Software Engineer",
+            "target_role": "Tech Lead",
+            "quantitative_scores": {
+                "performance_score": 5,
+                "potential_score": 5,
+                "risk_of_attrition": "Low"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Technical Proficiency",
+                    "Problem Solving",
+                    "Communication"
+                ],
+                "behavioral_traits": [
+                    "Highly collaborative",
+                    "Excellent communication",
+                    "Strong problem-solving abilities"
+                ],
+                "competency_gaps": [
+                    "None identified"
+                ]
+            },
+            "reasoning": "Simran demonstrates exceptional performance and potential, exceeding expectations. Her skills align well with the Tech Lead role, indicating strong readiness for advancement. The high appraisal scores, combined with strong KPI achievement, productivity, and positive feedback, support this conclusion. She is in a critical role and has a high potential score.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E007",
+        "employee_name": "Aditya Rao",
+        "employee_analysis": {
+            "current_role": "Sales Manager",
+            "target_role": "Regional Sales Director",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Moderate"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Problem Solving",
+                    "Leadership",
+                    "Communication"
+                ],
+                "behavioral_traits": [
+                    "Strong leadership qualities",
+                    "Good problem-solving skills",
+                    "Effective communication"
+                ],
+                "competency_gaps": [
+                    "Learning Agility"
+                ]
+            },
+            "reasoning": "Aditya demonstrates good performance and potential, aligning well with the Regional Sales Director role. His experience and success in his current role, combined with good appraisal scores and positive feedback, support his progression. However, a slightly lower Learning Agility score indicates an area for development. He is in a critical role and has a good potential score.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E008",
+        "employee_name": "Pooja Deshmukh",
+        "employee_analysis": {
+            "current_role": "Operations Analyst",
+            "target_role": "Operations Manager",
+            "quantitative_scores": {
+                "performance_score": 3,
+                "potential_score": 3,
+                "risk_of_attrition": "Moderate"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Problem Solving",
+                    "Learning Agility"
+                ],
+                "behavioral_traits": [
+                    "Willingness to learn",
+                    "Good problem-solving abilities"
+                ],
+                "competency_gaps": [
+                    "KPI Achievement",
+                    "Leadership"
+                ]
+            },
+            "reasoning": "Pooja's performance and potential are currently at a moderate level. There is a skill gap to achieve the target role, and she has a high attrition risk score. Her performance and goal completion need improvement. Her lower scores in some areas indicate areas for development before she advances to the Operations Manager role. She is not in a critical role.",
+            "nine_box_performance": "Medium Performer",
+            "nine_box_potential": "Medium Potential",
+            "nine_box_label": "Core Players"
+        }
+    },
+    {
+        "employee_id": "E010",
+        "employee_name": "Sanya Batra",
+        "employee_analysis": {
+            "current_role": "Content Strategist",
+            "target_role": "Marketing Manager",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Moderate"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Communication",
+                    "Team Collaboration",
+                    "Learning Agility"
+                ],
+                "behavioral_traits": [
+                    "Strong communicator",
+                    "Collaborative",
+                    "Adaptable"
+                ],
+                "competency_gaps": [
+                    "Skill Gap"
+                ]
+            },
+            "reasoning": "Sanya shows a good performance level and moderate potential for promotion. Her strengths in communication and collaboration, combined with relevant experience, make her a suitable candidate for the Marketing Manager role. Addressing her skill gap through training and development would further enhance her readiness. She is not in a critical role.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    },
+    {
+        "employee_id": "E012",
+        "employee_name": "Shreya Kapoor",
+        "employee_analysis": {
+            "current_role": "Recruitment Specialist",
+            "target_role": "HR Manager",
+            "quantitative_scores": {
+                "performance_score": 3,
+                "potential_score": 3,
+                "risk_of_attrition": "Moderate"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Communication",
+                    "Team Collaboration"
+                ],
+                "behavioral_traits": [
+                    "Good communication skills",
+                    "Team player"
+                ],
+                "competency_gaps": [
+                    "KPI Achievement",
+                    "Skill Gap"
+                ]
+            },
+            "reasoning": "Shreya is performing at a satisfactory level, with a moderate potential for advancement. To be ready for the HR Manager role, improvements in KPI achievement and addressing skill gaps are necessary. Her lower Engagement Score is an area of concern that should be monitored. She is not in a critical role.",
+            "nine_box_performance": "Medium Performer",
+            "nine_box_potential": "Medium Potential",
+            "nine_box_label": "Core Players"
+        }
+    },
+    {
+        "employee_id": "E014",
+        "employee_name": "Minal Reddy",
+        "employee_analysis": {
+            "current_role": "Finance Manager",
+            "target_role": "Director of Finance",
+            "quantitative_scores": {
+                "performance_score": 4,
+                "potential_score": 4,
+                "risk_of_attrition": "Low"
+            },
+            "qualitative_analysis": {
+                "top_skills": [
+                    "Finance Management",
+                    "Leadership",
+                    "Problem Solving"
+                ],
+                "behavioral_traits": [
+                    "Good Communication",
+                    "Team Collaboration",
+                    "Learning Agility"
+                ],
+                "competency_gaps": [
+                    "Skill Gap Score: 13"
+                ]
+            },
+            "reasoning": "Minal Reddy demonstrates strong performance and potential, indicated by high appraisal scores and a proactive approach to learning and development. The data supports her readiness for a Director of Finance role, with a focus on addressing the skill gap to enhance her capabilities.",
+            "nine_box_performance": "High Performer",
+            "nine_box_potential": "High Potential",
+            "nine_box_label": "Stars"
+        }
+    }
+]

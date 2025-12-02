@@ -1,0 +1,442 @@
+[
+  {
+    "employee_name": "Employee_1",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Communication",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Technical"
+        ]
+      },
+      "reasoning": "Employee_1 shows potential, but needs to improve teamwork and technical skills to enhance performance."
+    }
+  },
+  {
+    "employee_name": "Employee_2",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Critical Thinking",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_2 needs to focus on leadership and time management to improve overall performance."
+    }
+  },
+  {
+    "employee_name": "Employee_3",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Communication",
+          "Attention to Detail"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Problem Solving"
+        ]
+      },
+      "reasoning": "Employee_3 performs adequately but requires development in technical skills and problem-solving to improve overall performance."
+    }
+  },
+  {
+    "employee_name": "Employee_4",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Attention to Detail",
+          "Communication"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_4 is competent in their role, but struggles with problem-solving and time management, indicating areas for improvement."
+    }
+  },
+  {
+    "employee_name": "Employee_5",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Problem-Solving",
+          "Communication"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Creativity"
+        ]
+      },
+      "reasoning": "Employee_5 demonstrates solid technical skills as a developer but needs to enhance leadership and creative thinking for career advancement."
+    }
+  },
+  {
+    "employee_name": "Employee_6",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Planning",
+          "Organization",
+          "Communication"
+        ],
+        "competency_gaps": [
+          "Time Management",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_6 is a competent Project Manager, but requires improvement in time management and teamwork to maximize their effectiveness."
+    }
+  },
+  {
+    "employee_name": "Employee_7",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Communication",
+          "Problem Solving"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_7 demonstrates satisfactory performance but requires development in leadership and time management skills. Potential is moderately high."
+    }
+  },
+  {
+    "employee_name": "Employee_8",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Development",
+          "Technical Proficiency",
+          "Problem Solving"
+        ],
+        "competency_gaps": [
+          "Teamwork",
+          "Problem Solving"
+        ]
+      },
+      "reasoning": "Employee_8's performance is adequate, with areas for improvement in teamwork and problem-solving. Potential is moderate."
+    }
+  },
+  {
+    "employee_name": "Employee_9",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Design",
+          "Communication",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Time Management",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_9 performs adequately as a Designer. Development in time management and leadership will unlock higher potential."
+    }
+  },
+  {
+    "employee_name": "Employee_10",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 7,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Data Visualization",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_10 is a solid Data Analyst, but needs to enhance technical skills and leadership capabilities for career progression."
+    }
+  },
+  {
+    "employee_name": "Employee_11",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Leadership",
+          "Planning"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Communication"
+        ]
+      },
+      "reasoning": "Employee_11 shows potential but needs improvement in technical skills and communication."
+    }
+  },
+  {
+    "employee_name": "Employee_12",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Problem-solving",
+          "Debugging"
+        ],
+        "competency_gaps": [
+          "Communication",
+          "Technical"
+        ]
+      },
+      "reasoning": "Employee_12 needs to improve technical skills and communication."
+    }
+  },
+  {
+    "employee_name": "Employee_13",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Communication",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Creativity",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_13 demonstrates solid project management skills, but struggles with creativity and needs to improve leadership."
+    }
+  },
+  {
+    "employee_name": "Employee_14",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Communication",
+          "Problem-solving"
+        ],
+        "competency_gaps": [
+          "Technical",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_14 demonstrates solid project management skills, but struggles with technical aspects and needs to improve leadership."
+    }
+  },
+  {
+    "employee_name": "Employee_15",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Leadership",
+          "Planning"
+        ],
+        "competency_gaps": [
+          "Communication",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_15 performs adequately as a Project Manager, with potential for growth, but requires improvement in communication and teamwork skills."
+    }
+  },
+  {
+    "employee_name": "Employee_16",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 6,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Quality Assurance",
+          "Attention to Detail",
+          "Testing"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Time Management"
+        ]
+      },
+      "reasoning": "Employee_16 is a competent QA, but could benefit from improvements in problem-solving and time management to enhance overall performance."
+    }
+  },
+  {
+    "employee_name": "Employee_17",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Data Analysis",
+          "Communication",
+          "Technical Skills"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_17 demonstrates proficiency in data analysis but needs development in problem-solving and teamwork to enhance overall performance."
+    }
+  },
+  {
+    "employee_name": "Employee_18",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Project Management",
+          "Communication",
+          "Leadership"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_18 is a decent Project Manager, however, struggles with problem-solving and needs to improve teamwork."
+    }
+  },
+  {
+    "employee_name": "Employee_19",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "Coding",
+          "Analytical Thinking",
+          "Communication"
+        ],
+        "competency_gaps": [
+          "Problem Solving",
+          "Leadership"
+        ]
+      },
+      "reasoning": "Employee_19 demonstrates adequate performance as a Developer but requires development in problem-solving and leadership skills. There is moderate attrition risk."
+    }
+  },
+  {
+    "employee_name": "Employee_20",
+    "employee_analysis": {
+      "quantitative_scores": {
+        "performance_score": 6,
+        "potential_score": 7,
+        "risk_of_attrition": "Medium"
+      },
+      "qualitative_analysis": {
+        "top_skills": [
+          "UI/UX Design",
+          "Creativity",
+          "Communication"
+        ],
+        "competency_gaps": [
+          "Leadership",
+          "Teamwork"
+        ]
+      },
+      "reasoning": "Employee_20 shows adequate performance as a Designer. Development is needed in leadership and teamwork skills. Moderate attrition risk is indicated."
+    }
+  }
+]

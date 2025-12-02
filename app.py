@@ -264,7 +264,7 @@ def upload_file():
         new_df = df[df["Role"] == role].copy()
         process_dfs_and_roles.append((new_df, role)) # Store (DataFrame, Role) tuple
 
-    # 3. Process scores in parallel
+    # 3. Process scores in concurrently
     with ThreadPoolExecutor() as executor:
         # Unpack the list of (df, role) tuples for the first two arguments of task
         dfs = [item[0] for item in process_dfs_and_roles]
