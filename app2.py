@@ -16,12 +16,48 @@ from string import Template
 try:
     from ninebox import NineBox
 except ImportError:
-    # Dummy fallback if file is missing
     class NineBox:
         @staticmethod
         def apply(data):
             for emp in data:
-                emp["nine_box_label"] = "Core Players" # Default
+                # Safe extraction of scores
+                analysis = emp.get("employee_analysis", {})
+                scores = analysis.get("quantitative_scores", {})
+                
+                # Handle potential None or String values safely
+                try:
+                    p_score = float(scores.get("performance_score", 0))
+                    pot_score = float(scores.get("potential_score", 0))
+                except (ValueError, TypeError):
+                    p_score = 0
+                    pot_score = 0
+                
+                # Standard Nine Box Logic (Can be customized)
+                label = "Risk" # Default
+                
+                # High Potential (8-10)
+                if pot_score >= 8:
+                    if p_score >= 8: label = "Stars"
+                    elif p_score >= 5: label = "High Potential"
+                    else: label = "Enigma"
+                # Medium Potential (5-7)
+                elif pot_score >= 5:
+                    if p_score >= 8: label = "Core Star"
+                    elif p_score >= 5: label = "Core Player"
+                    else: label = "Inconsistent Player"
+                # Low Potential (1-4)
+                else:
+                    if p_score >= 8: label = "High Performer"
+                    elif p_score >= 5: label = "Effective"
+                    else: label = "Risk"
+
+                # Assign label to root
+                emp["nine_box_label"] = label
+                
+                # Assign label to internal analysis (so it shows in nested JSON)
+                if "employee_analysis" in emp:
+                    emp["employee_analysis"]["nine_box_label"] = label
+                    
             return data
 
 # -------------------- APP SETUP -------------------- #
@@ -34,68 +70,44 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # -------------------- CONFIGURATION -------------------- #
 BATCH_SIZE = 5
 MAX_CONCURRENT_REQUESTS = 3
+# ⚠️ Replace with your actual API Key
+API_KEY = "AIzaSyDS_Rzc2Nu-aEOrO0ECjj0Bj-1qwa1Tw_U" 
 
-# -------------------- MONGO CONNECT -------------------- #
-mongo_client = MongoClient(
-    "mongodb+srv://creatorpanda26:admin%40123@cluster0.izpl1se.mongodb.net/"
-)
+# -------------------- DATABASE -------------------- #
+mongo_client = MongoClient("mongodb+srv://creatorpanda26:admin%40123@cluster0.izpl1se.mongodb.net/")
 db = mongo_client["sih_appraisal"]
-
-# -------------------- API KEY -------------------- #
-# ⚠️ Ensure this is your valid key
-API_KEY = "AIzaSyA_nstKox_CXsjkwp2WJhCUYjSxYFm8p8U"
 
 # -------------------- HELPERS -------------------- #
 
 def normalize_role_text(s):
-    if s is None:
-        return ""
+    if s is None: return ""
     s = str(s).lower().strip()
-    s = re.sub(r'[\(\)\[\]\.,/\\\-]', ' ', s)
-    s = re.sub(r'\s+', ' ', s)
-    return s
+    return re.sub(r'[\(\)\[\]\.,/\\\-]', ' ', re.sub(r'\s+', ' ', s))
 
 def fuzzy_ratio(a, b):
     return int(SequenceMatcher(None, a, b).ratio() * 100)
 
-def map_target_role(employee_role, success_profiles, fuzzy_threshold=85):
-    if not employee_role:
-        return None
-
+def map_target_roles(employee_role, success_profiles, fuzzy_threshold=85):
+    if not employee_role: return []
     norm_emp = normalize_role_text(employee_role)
-    mapping = []
+    matched_roles = set()
     
+    mapping = []
     for profile in success_profiles:
+        role_title = profile.get("RoleTitle")
         applicable_roles = profile.get("ApplicableRoles", []) or []
         for ar in applicable_roles:
-            nar = normalize_role_text(ar)
-            mapping.append((nar, profile.get("RoleTitle")))
+            mapping.append((normalize_role_text(ar), role_title))
 
-    # 1. Exact match
     for nar, role_title in mapping:
         if norm_emp == nar:
-            return role_title
+            matched_roles.add(role_title)
+        elif set(norm_emp.split()) == set(nar.split()):
+            matched_roles.add(role_title)
+        elif fuzzy_ratio(norm_emp, nar) >= fuzzy_threshold:
+            matched_roles.add(role_title)
 
-    # 2. Token match
-    emp_tokens = set(norm_emp.split())
-    for nar, role_title in mapping:
-        nar_tokens = set(nar.split())
-        if emp_tokens == nar_tokens:
-            return role_title
-
-    # 3. Fuzzy match
-    best_score = 0
-    best_role = None
-    for nar, role_title in mapping:
-        score = fuzzy_ratio(norm_emp, nar)
-        if score > best_score:
-            best_score = score
-            best_role = role_title
-
-    if best_score >= fuzzy_threshold:
-        return best_role
-
-    return None
+    return list(matched_roles)
 
 def clean_json_response(text):
     try:
@@ -103,68 +115,57 @@ def clean_json_response(text):
     except:
         match = re.search(r'(\[.*\]|\{.*\})', text, re.DOTALL)
         if match:
-            try:
-                return json.loads(match.group())
-            except:
-                pass
+            try: return json.loads(match.group())
+            except: pass
     return None
-
 
 # -------------------- PHASE 1: ANALYSIS -------------------- #
 
 async def process_batch_async(client, batch_data, batch_id, semaphore):
     async with semaphore:
         print(f"Processing Batch {batch_id} (Analysis)...")
-
-        prompt_template = Template("""
+        
+        prompt = Template("""
         You are an Expert HR AI.
+        INPUT DATA: $batch_json
         
-        TASK:
-        1. Analyze the "INPUT DATA" (Employees).
-        2. Perform an appraisal analysis comparing 'current_role' vs 'target_role'.
-        3. Assign quantitative scores (1-10) and qualitative insights.
-
-        INPUT DATA:
-        $batch_json
-
-        INSTRUCTIONS:
-        Return a strictly formatted JSON LIST of objects.
+        TASK: Compare 'current_role' vs 'target_role'. Return JSON List.
         
-        REQUIRED JSON STRUCTURE:
+        CRITICAL SCORING INSTRUCTIONS:
+        1. 'competency_gap_count': Count strictly how many specific skills are missing (Integer).
+        2. 'experience_alignment_score': Score 1-10 on how well their past experience fits the target.
+        3. 'target_role': You MUST include the target role inside 'employee_analysis'.
+        
+        STRUCTURE:
         [
             {
                 "employee_name": "String",
-                "employee_id": "String (from input)",
+                "employee_id": "String",
                 "employee_analysis": {
                     "current_role": "String",
                     "target_role": "String",
                     "quantitative_scores": {
-                        "performance_score": 5,
-                        "potential_score": 5,
-                        "risk_of_attrition": "Low/Medium/High"
+                        "performance_score": 1-10,
+                        "potential_score": 1-10,
+                        "experience_alignment_score": 1-10,
+                        "competency_gap_count": 0,
+                        "risk_of_attrition": "Low/Med/High"
                     },
-                    "qualitative_analysis": {
-                        "top_skills": ["Skill 1", "Skill 2"],
-                        "behavioral_traits": ["Trait 1", "Trait 2"],
-                        "competency_gaps": ["Gap 1", "Gap 2"]
-                    },
-                    "reasoning": "Summary here."
+                    "qualitative_analysis": { 
+                        "top_skills": [],
+                        "behavioral_traits": [],
+                        "competency_gaps": []
+                     },
+                    "reasoning": "String"
                 }
             }
         ]
-        """)
-
-        prompt = prompt_template.substitute(
-            batch_json=json.dumps(batch_data, indent=2)
-        )
+        """).substitute(batch_json=json.dumps(batch_data, indent=2))
 
         try:
             response = await client.aio.models.generate_content(
-                model="gemini-2.0-flash-lite",
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
+                model="gemini-2.0-flash-lite", contents=prompt,
+                config=types.GenerateContentConfig(response_mime_type="application/json")
             )
             return clean_json_response(response.text)
         except Exception as e:
@@ -172,182 +173,187 @@ async def process_batch_async(client, batch_data, batch_id, semaphore):
             return None
 
 async def orchestrate_processing(all_employees, api_key):
-    # 1. Create Client INSIDE the async flow
     client = genai.Client(api_key=api_key)
-    
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
     tasks = []
-
     for i in range(0, len(all_employees), BATCH_SIZE):
-        batch = all_employees[i:i + BATCH_SIZE]
-        batch_id = (i // BATCH_SIZE) + 1
-        # Pass the client to the batch function
-        tasks.append(process_batch_async(client, batch, batch_id, semaphore))
-
+        tasks.append(process_batch_async(client, all_employees[i:i + BATCH_SIZE], (i//BATCH_SIZE)+1, semaphore))
     results = await asyncio.gather(*tasks)
+    return [item for sublist in results if sublist for item in sublist]
+
+# -------------------- PHASE 1.5: SELECT BEST FIT (FLOWCHART LOGIC) -------------------- #
+
+def select_best_role_fits(analyzed_data):
+    """
+    Implements Flowchart Decision Tree with FIX for null Target Roles.
+    """
+    grouped = {}
+
+    # 1. Grouping & Metrics
+    for entry in analyzed_data:
+        emp_id = entry.get("employee_id")
+        
+        # Safe extraction
+        analysis = entry.get("employee_analysis", {})
+        scores = analysis.get("quantitative_scores", {})
+        
+        try:
+            perf = float(scores.get("performance_score", 0))
+            pot = float(scores.get("potential_score", 0))
+            # Default gap count to high (bad) if missing
+            gap_count = int(scores.get("competency_gap_count", 99)) 
+            exp_align = float(scores.get("experience_alignment_score", 0))
+        except:
+            perf, pot, gap_count, exp_align = 0, 0, 99, 0
+            
+        entry["_metrics"] = {
+            "total_score": perf + pot,
+            "gap_count": gap_count,
+            "exp_score": exp_align
+        }
+
+        if emp_id not in grouped: grouped[emp_id] = []
+        grouped[emp_id].append(entry)
+
+    final_selection = []
     
-    final_data = []
-    for r in results:
-        if r: final_data.extend(r)
-    return final_data
+    # 2. Sorting & Selection
+    for emp_id, candidates in grouped.items():
+        
+        # Sort Logic (Flowchart):
+        # 1. Total Score (Desc)
+        # 2. Gap Count (Asc) - Lower gaps are better
+        # 3. Experience Score (Desc)
+        candidates.sort(key=lambda x: (
+            -x["_metrics"]["total_score"],
+            x["_metrics"]["gap_count"],
+            -x["_metrics"]["exp_score"]
+        ))
+        
+        # Winner
+        best_fit = candidates[0]
+        
+        # Alternatives (Losers)
+        alternatives = []
+        for other in candidates[1:]:
+            analysis = other.get("employee_analysis", {})
+            
+            # --- FIX: LOOK INSIDE ANALYSIS FOR TARGET ROLE ---
+            t_role = analysis.get("target_role") 
+            if not t_role:
+                # Fallback to root if analysis missed it
+                t_role = other.get("target_role")
+                
+            alternatives.append({
+                "target_role": t_role, # Corrected extraction
+                "nine_box_label": other.get("nine_box_label", analysis.get("nine_box_label", "N/A")),
+                "quantitative_scores": analysis.get("quantitative_scores"),
+                "reasoning": analysis.get("reasoning")
+            })
+            
+        best_fit["alternative_role_analysis"] = alternatives
+        
+        # Cleanup
+        if "_metrics" in best_fit: del best_fit["_metrics"]
+        
+        final_selection.append(best_fit)
 
+    return final_selection
 
-# -------------------- PHASE 2: IDP GENERATION -------------------- #
+# -------------------- PHASE 2: IDP -------------------- #
 
 async def second_pass_batch(client, batch, batch_id, semaphore):
     async with semaphore:
-        print(f"Processing Batch {batch_id} (IDP Generation)...")
-
-        prompt_template = Template("""
-        You are an Expert HR AI.
-
-        TASK:
-        You are receiving employee data that includes a 'nine_box_label'.
-        Add a new field 'idp_plan' based on that label.
-
-        RULES:
-        - If label is top-tier (Stars) -> Leadership IDP
-        - If label is mid-tier (Core) -> Improvement IDP
-        - If label is bottom-tier (Risk) -> Recovery Plan
-
-        INPUT DATA:
-        $batch_json
-
+        print(f"Processing Batch {batch_id} (IDP)...")
+        prompt = Template("""
+        Generate IDP for these employees.
+        INPUT DATA: $batch_json
+        
+        INSTRUCTIONS:
+        1. Keep JSON structure EXACTLY as provided.
+        2. DO NOT remove 'alternative_role_analysis'.
+        3. Only ADD 'idp_plan' inside 'employee_analysis'.
+        
         OUTPUT STRUCTURE:
-        Return the exact same list, but inside 'employee_analysis', add:
-        "idp_plan": {
-            "idp_type": "Leadership/Improvement/Recovery",
-            "focus_areas": ["Area 1", "Area 2"],
-            "action_plan": ["Action 1", "Action 2"],
-            "timeline": "6 months"
+        ... inside "employee_analysis": {
+             ...,
+             "idp_plan": {
+                  "idp_type": "Leadership/Improvement",
+                  "focus_areas": ["..."],
+                  "action_plan": ["..."],
+                  "timeline": "6 months"
+             }
         }
-        """)
-
-        prompt = prompt_template.substitute(
-            batch_json=json.dumps(batch, indent=2)
-        )
+        """).substitute(batch_json=json.dumps(batch, indent=2))
 
         try:
             response = await client.aio.models.generate_content(
-                model="gemini-2.0-flash-lite",
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
+                model="gemini-2.0-flash-lite", contents=prompt,
+                config=types.GenerateContentConfig(response_mime_type="application/json")
             )
             return clean_json_response(response.text)
-        except Exception as e:
-            print(f"IDP Batch {batch_id} Error:", e)
-            return None
+        except Exception: return None
 
-async def orchestrate_second_pass(processed_with_9box, api_key):
-    # 1. Create Client INSIDE the async flow
+async def orchestrate_second_pass(data, api_key):
     client = genai.Client(api_key=api_key)
-    
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
     tasks = []
-
-    for i in range(0, len(processed_with_9box), BATCH_SIZE):
-        batch = processed_with_9box[i:i + BATCH_SIZE]
-        batch_id = (i // BATCH_SIZE) + 1
-        # Pass the client to the batch function
-        tasks.append(second_pass_batch(client, batch, batch_id, semaphore))
-
+    for i in range(0, len(data), BATCH_SIZE):
+        tasks.append(second_pass_batch(client, data[i:i + BATCH_SIZE], (i//BATCH_SIZE)+1, semaphore))
     results = await asyncio.gather(*tasks)
-    
-    final_output = []
-    for r in results:
-        if r: final_output.extend(r)
-    return final_output
+    return [item for sublist in results if sublist for item in sublist]
 
-
-# -------------------- MAIN ROUTES -------------------- #
-
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"message": "HR AI Backend Running"})
+# -------------------- ROUTES -------------------- #
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
     start_time = time.time()
-
     try:
-        # 1. Check File
-        if "file" not in request.files:
-            return jsonify({"error": "No file uploaded"}), 400
+        if "file" not in request.files: return jsonify({"error": "No file"}), 400
         file = request.files["file"]
-        if file.filename == "":
-            return jsonify({"error": "Empty file"}), 400
-
-        # 2. Save & Read
-        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(file_path)
+        file.save(os.path.join(UPLOAD_FOLDER, file.filename))
         
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(os.path.join(UPLOAD_FOLDER, file.filename))
+        if "employee_id" not in df.columns: df["employee_id"] = df.index.astype(str)
+        else: df["employee_id"] = df["employee_id"].astype(str)
+        
         employees = df.to_dict(orient="records")
-
-        # 3. Get Success Profiles
         success_profiles = list(db["success_profiles"].find({}))
         
-        # 4. Map Roles (Local Logic)
-        mapped_employees = []
+        # 1. Map & Explode
+        exploded = []
         for emp in employees:
-            # Case-insensitive column finding
-            role_key = next((k for k in emp.keys() if k.lower() in ['role', 'job title', 'designation']), None)
-            
+            role_key = next((k for k in emp.keys() if k.lower() in ['role','job title','designation']), None)
             if role_key:
-                current_role = emp[role_key]
-                target = map_target_role(current_role, success_profiles)
-                if target:
-                    emp["current_role"] = current_role
-                    emp["target_role"] = target
-                    mapped_employees.append(emp)
+                targets = map_target_roles(emp[role_key], success_profiles)
+                if not targets: continue # Skip if no match
+                for t in targets:
+                    new_emp = emp.copy()
+                    new_emp["target_role"] = t
+                    exploded.append(new_emp)
+                    
+        if not exploded: return jsonify({"error": "No roles matched"}), 400
 
-        if not mapped_employees:
-            return jsonify({"error": "No employees matched Success Profiles roles."}), 400
-
-        # 5. First Pass: AI Analysis
-        print(f"--- Starting Phase 1: Analysis ({len(mapped_employees)} employees) ---")
-        # Pass API_KEY here
-        processed_data = asyncio.run(orchestrate_processing(mapped_employees, API_KEY))
+        # 2. Analyze
+        analyzed = asyncio.run(orchestrate_processing(exploded, API_KEY))
         
-        if not processed_data:
-            return jsonify({"error": "AI Phase 1 returned no data"}), 500
+        # 3. Calc Labels (Pre-Selection)
+        processed_9box = NineBox.apply(analyzed)
 
-        # 6. Apply NineBox Logic
-        processed_with_9box = NineBox.apply(processed_data)
+        # 4. Filter (Flowchart Logic + Fix for Nulls)
+        best_fits = select_best_role_fits(processed_9box)
 
-        # 7. Second Pass: IDP Generation
-        print("--- Starting Phase 2: IDP Generation ---")
-        # Pass API_KEY here
-        final_output = asyncio.run(orchestrate_second_pass(processed_with_9box, API_KEY))
-
-        if not final_output:
-            return jsonify({"error": "AI Phase 2 failed"}), 500
-
-        # 8. Save & Return
-        output_file_path = os.path.join(UPLOAD_FOLDER, "results.json")
-        with open(output_file_path, "w", encoding="utf-8") as f:
-            json.dump(final_output, f, indent=4)
-
-        end_time = time.time()
-        duration = round(end_time - start_time, 2)
+        # 5. IDP
+        final_output = asyncio.run(orchestrate_second_pass(best_fits, API_KEY))
 
         return jsonify({
             "status": "success",
-            "total_processed": len(final_output),
-            "response_time_seconds": duration,
-            "results_file": output_file_path,
             "results": final_output
         })
 
     except Exception as e:
-        end_time = time.time()
-        print(f"Server Error: {e}")
-        return jsonify({
-            "error": str(e),
-            "response_time_seconds": round(end_time - start_time, 2)
-        }), 500
+        print(f"Error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
