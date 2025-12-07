@@ -12,7 +12,6 @@ from difflib import SequenceMatcher
 import time
 from string import Template
 from collections import Counter, defaultdict
-# --- NEW IMPORTS FOR CRUD ---
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
@@ -230,10 +229,13 @@ class AnalyticsEngine:
 def create_user_accounts(employees_data):
     """
     Automatically creates user accounts in MongoDB 'users' collection.
-    Username: Employee Name
-    Password: Pass@{employee_id}
+    Enforces unique employee_id.
     """
     users_col = db["users"]
+    
+    # 1. Enforce Uniqueness at Database Level
+    users_col.create_index("employee_id", unique=True)
+    
     count = 0
     print("🔄 Starting Auto-Account Creation...")
     
@@ -243,6 +245,8 @@ def create_user_accounts(employees_data):
         
         e_name = emp.get("Name") or emp.get("Employee Name") or emp.get("employee_name") or f"Employee_{e_id}"
         e_name = str(e_name).strip()
+        
+        # Default Password Logic
         password = f"Pass@{e_id}"
         
         user_doc = {
@@ -254,8 +258,17 @@ def create_user_accounts(employees_data):
             "first_login": True
         }
         
-        users_col.update_one({"employee_id": e_id}, {"$set": user_doc}, upsert=True)
-        count += 1
+        try:
+            # Upsert ensures we update if exists, insert if new, based on unique employee_id
+            users_col.update_one(
+                {"employee_id": e_id}, 
+                {"$set": user_doc}, 
+                upsert=True
+            )
+            count += 1
+        except Exception as e:
+            print(f"Skipping duplicate or error for {e_id}: {e}")
+            
     print(f"✅ Successfully created/updated {count} user accounts.")
 
 def save_idp_results(final_data):
@@ -291,6 +304,19 @@ def serialize_doc(doc):
     if doc:
         doc["_id"] = str(doc["_id"])
     return doc
+
+def serialize_course(course):
+    """Converts MongoDB document to the frontend Interface format for Learning Module"""
+    return {
+        "id": str(course["_id"]),
+        "title": course.get("title"),
+        "description": course.get("description"),
+        "category": course.get("category"),
+        "duration": course.get("duration"),
+        "format": course.get("format"),
+        "enrolledCount": course.get("enrolledCount", 0),
+        "thumbnail": course.get("thumbnail", "")
+    }
 
 # -------------------- HELPERS & GENAI -------------------- #
 
@@ -537,6 +563,103 @@ def delete_profile(id):
         return jsonify({"error": "Invalid Object ID format"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# -------------------- LEARNING MODULE CRUD APIs -------------------- #
+
+# 1. READ ALL COURSES
+@app.route('/api/courses', methods=['GET'])
+def get_courses():
+    try:
+        courses = db["learning_courses"].find()
+        return jsonify([serialize_course(course) for course in courses]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# 2. CREATE COURSE
+@app.route('/api/courses', methods=['POST'])
+def add_course():
+    try:
+        data = request.json
+        
+        # basic validation
+        if not data.get('title') or not data.get('category'):
+            return jsonify({"error": "Title and Category are required"}), 400
+
+        new_course = {
+            "title": data.get("title"),
+            "description": data.get("description", ""),
+            "category": data.get("category"),
+            "duration": data.get("duration", ""),
+            "format": data.get("format", "video"),
+            "enrolledCount": 0, # Default to 0
+            "thumbnail": "",     # Placeholder for file upload logic
+            "created_at": time.time()
+        }
+
+        result = db["learning_courses"].insert_one(new_course)
+        
+        # Return the created object with its new ID
+        created_course = db["learning_courses"].find_one({"_id": result.inserted_id})
+        return jsonify(serialize_course(created_course)), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# 3. DELETE COURSE
+@app.route('/api/courses/<id>', methods=['DELETE'])
+def delete_course(id):
+    try:
+        result = db["learning_courses"].delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 1:
+            return jsonify({"message": "Course deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Course not found"}), 404
+    except InvalidId:
+        return jsonify({"error": "Invalid Object ID format"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# 4. UPDATE COURSE (Optional helper)
+@app.route('/api/courses/<id>', methods=['PUT'])
+def update_course(id):
+    try:
+        data = request.json
+        # Filter out fields we don't want to wipe (like _id)
+        update_data = {k: v for k, v in data.items() if k != 'id' and k != '_id'}
+        
+        result = db["learning_courses"].update_one(
+            {"_id": ObjectId(id)},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 1:
+            updated_course = db["learning_courses"].find_one({"_id": ObjectId(id)})
+            return jsonify(serialize_course(updated_course)), 200
+        else:
+            return jsonify({"error": "Course not found"}), 404
+    except InvalidId:
+        return jsonify({"error": "Invalid Object ID format"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# -------------------- USER MANAGEMENT APIs -------------------- #
+
+@app.route('/api/users', methods=['GET'])
+def get_all_users():
+    """
+    Fetches all user accounts with their IDs and info.
+    """
+    try:
+        users = []
+        # Fetch all users, excluding the MongoDB internal _id if you prefer, 
+        # or converting it to string as shown below.
+        for doc in db["users"].find():
+            doc["_id"] = str(doc["_id"]) # Serialize ObjectId
+            users.append(doc)
+            
+        return jsonify(users), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 # -------------------- MAIN ROUTES -------------------- #
 
